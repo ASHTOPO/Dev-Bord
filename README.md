@@ -1,34 +1,106 @@
-// Define the pin connected to the sensor's data/analog output
-const int sensorPin = A0;
-// Define the pin to power the sensor (can be any digital pin)
-const int sensorPowerPin = 7; // Example: Digital Pin 7
+//for soil moisture
+const int AirValue = 810;    //edit later
+const int WaterValue = 390;  //edit later
+int SoilMoistureValue = 390;
+int SoilMoisturePercent = 100;
+const int SMrelay = 8;
+int lastnightshadestate;
+int lastcruciferstate;
+int lastbeanstate;
+int currentnightshadestate;
+int currentcruciferstate;
+int currentbeanstate;
 
 void setup() {
-  // Initialize serial communication to see readings on the Serial Monitor
+  // initialize serial communications at 9600 bps:
   Serial.begin(9600);
-  // Set the power pin as an output and ensure it's off initially
-  pinMode(sensorPowerPin, OUTPUT);
-  digitalWrite(sensorPowerPin, LOW);
+
+
+  pinMode(51, INPUT);
+  pinMode(52, INPUT);
+  pinMode(53, INPUT);
+
+  pinMode(A4, INPUT);
+  pinMode(8, OUTPUT);
+
+  currentnightshadestate = digitalRead(51);
+  currentcruciferstate = digitalRead(52);
+  currentbeanstate = digitalRead(53);
 }
 
 void loop() {
-  // Turn the sensor on
-  digitalWrite(sensorPowerPin, HIGH);
-  // Wait a brief moment for the sensor to power on and stabilize
-  delay(300); 
+  digitalWrite(8, HIGH);
+  lastnightshadestate = currentnightshadestate;
+  lastcruciferstate = currentcruciferstate;
+  lastbeanstate = currentbeanstate;
+  currentnightshadestate = digitalRead(51);
+  currentcruciferstate = digitalRead(52);
+  currentbeanstate = digitalRead(53);
+  SoilMoistureValue = analogRead(A4);  //SM sensor
+  SoilMoisturePercent = map(SoilMoistureValue, AirValue, WaterValue, 0, 100);
 
-  // Read the analog value from the sensor
-  int sensorValue = analogRead(sensorPin); 
+  if (lastnightshadestate == HIGH && currentnightshadestate == LOW) {
+    Serial.print("Nightshade");
+    for (int i = 0; i < i + 1; i++) {
+      Serial.println(SoilMoistureValue);
+      if (SoilMoisturePercent <= 70) {
 
-  // Turn the sensor off to prevent corrosion
-  digitalWrite(sensorPowerPin, LOW);
-  // A brief delay after turning off helps the sensor settle
-  delay(10); 
+        Serial.print(SoilMoisturePercent);
+        Serial.print("%");
+        digitalWrite(SMrelay, LOW);  //water pump on
+        delay(700);
+      } else if (SoilMoisturePercent > 70) {
 
-  // Print the raw analog reading to the Serial Monitor
-  Serial.print("Analog Moisture Reading: ");
-  Serial.println(sensorValue);
+        Serial.print(SoilMoisturePercent);
+        Serial.print("%");
+        digitalWrite(SMrelay, HIGH);  //water pump off
+        delay(700);
+      }
+      Serial.println();
+    }
+  }
 
-  // Wait before taking the next reading to avoid overwhelming the sensor or serial monitor
-  delay(1000); // Delay for 1 second
+
+  if (lastcruciferstate == HIGH && currentcruciferstate == LOW) {
+    Serial.print("Crucifers");
+    for (int i = 0; i < i + 1; i++) {
+      Serial.println(SoilMoistureValue);
+      if (SoilMoisturePercent <= 70) {
+
+        Serial.print(SoilMoisturePercent);
+        Serial.print("%");
+        digitalWrite(SMrelay, LOW);  //water pump on
+        delay(700);
+      } else if (SoilMoisturePercent > 70) {
+
+        Serial.print(SoilMoisturePercent);
+        Serial.print("%");
+        digitalWrite(SMrelay, HIGH);  //water pump off
+        delay(700);
+      }
+      Serial.println();
+    }
+  }
+
+  if (lastbeanstate == HIGH && currentbeanstate == LOW) {
+    Serial.print("Beans");
+    for (int i = 0; i < i + 1; i++) {
+      Serial.println(SoilMoistureValue);
+      if (SoilMoisturePercent <= 60) {
+
+        Serial.print(SoilMoisturePercent);
+        Serial.print("%");
+        digitalWrite(SMrelay, LOW);  //water pump on
+        delay(700);
+      } else if (SoilMoisturePercent > 60) {
+
+        Serial.print(SoilMoisturePercent);
+        Serial.print("%");
+        digitalWrite(SMrelay, HIGH);  //water pump off
+        delay(700);
+      }
+      Serial.println();
+    }
+  } else {
+  }
 }
