@@ -6,7 +6,12 @@
   ==================================================================
 -->
 
-This is my journal of the design and building process of **How it's Done**.  
+This is my journal of the design and building process of **Low-cost soil moisture detector**.  
 You can view this journal in more detail on **Hack Club Blueprint** [here](https://blueprint.hackclub.com/projects/207).
 
+
+## 10/5/2025 - I researched the project  
+
+I did what every person dose I researcher like a lot so I know what I was doing. I did it by searching about what is hack club Blueprint and how to do it. One thing I think that went well is that is something no one would expect and that is an word doc and find photos.![Screenshot 2025-10-05 1.06.06 PM.png](https://blueprint.hackclub.com/user-attachments/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6NjE0LCJwdXIiOiJibG9iX2lkIn19--f2c319ff670f39cc420ab84cc3106383db23ee40/Screenshot%202025-10-05%201.06.06%20PM.png)
+  
 
